@@ -4,7 +4,6 @@ import { app, database } from "../../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 
 // RichTextView
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 export default function NoteOperations() {
@@ -12,6 +11,9 @@ export default function NoteOperations() {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteDesc, setNoteDesc] = useState("");
   const dbInstance = collection(database, "note");
+  const [isUseQuill, setIsUseQuill] = useState(false);
+  const ReactQuill =
+    typeof window === "object" ? require("react-quill") : () => false;
 
   const inputToggle = () => {
     setInputVisible(!isInputVisible);
