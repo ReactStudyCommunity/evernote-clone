@@ -1,0 +1,19 @@
+{
+    // eslint適用
+    "eslint.validate": ["javascript", "typescript"],
+    // autofixの有効化
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+        "source.fixAll.stylelint": true
+    },
+    // 英数字、漢字などのスペルチェック無効
+    "cSpell.ignoreRegExpList": ["[0-9A-Za-zぁ-んァ-ヶ一-龠]+"],
+
+    // cSpellで除外する文字列を記載
+    "cSpell.words": [
+        "css",
+        "lintcss",
+        "evernote",
+        "stylelint"
+    ]
+}
