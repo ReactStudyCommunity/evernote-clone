@@ -7,11 +7,11 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 // RichTextView
 import "react-quill/dist/quill.snow.css";
 
-export default function NoteOperations() {
+export default function NoteOperations({ getSingleNote }) {
   const [isInputVisible, setInputVisible] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
-  const dbInstance = collection(database, "note");
+  const dbInstance = collection(database, "notes");
   const ReactQuill =
     typeof window === "object" ? require("react-quill") : () => false;
   const [notesArray, setNotesArray] = useState<Note[]>([]);
@@ -75,7 +75,11 @@ export default function NoteOperations() {
         <div>
           {notesArray.map((note) => {
             return (
-              <div className={styles.notesInner} key={note.id}>
+              <div
+                className={styles.notesInner}
+                onClick={() => getSingleNote(note.id)}
+                key={note.id}
+              >
                 <h4>{note.title}</h4>
               </div>
             );
