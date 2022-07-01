@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "../../styles/Evernote.module.scss";
 import { app, database } from "../../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 // RichTextView
 import "react-quill/dist/quill.snow.css";
@@ -11,16 +11,26 @@ export default function NoteOperations() {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteDesc, setNoteDesc] = useState("");
   const dbInstance = collection(database, "note");
-  const [isUseQuill, setIsUseQuill] = useState(false);
   const ReactQuill =
     typeof window === "object" ? require("react-quill") : () => false;
+  const [notesArray, setNotesArray] = useState<{ id: string }[]>([]);
 
   const inputToggle = () => {
     setInputVisible(!isInputVisible);
   };
 
-  const addDesc = (value) => {
+  const addDesc = (value: string) => {
     setNoteDesc(value);
+  };
+
+  const getNotes = () => {
+    getDocs(dbInstance).then((data) => {
+      setNotesArray(
+        data.docs.map((item) => {
+          return { ...item.data(), id: item.id };
+        })
+      );
+    });
   };
 
   const saveNote = () => {
@@ -32,6 +42,10 @@ export default function NoteOperations() {
       setNoteDesc("");
     });
   };
+
+  useEffect(() => {
+    getNotes();
+  }, []);
 
   return (
     <>
@@ -56,6 +70,16 @@ export default function NoteOperations() {
             </button>
           </div>
         )}
+        <div>
+          {notesArray.map((note) => {
+            return (
+              <div>
+                <h3>{note.noteTitle}</h3>
+                <p>{note.noteDesc}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );
