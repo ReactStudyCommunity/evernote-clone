@@ -1,12 +1,23 @@
 import { useState, useEffect } from "react";
 import styles from "../../styles/Evernote.module.scss";
+import { app, database } from "../../firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function NoteOperations() {
   const [isInputVisible, setInputVisible] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
+  const [noteDesc, setNoteDesc] = useState("");
+  const dbInstance = collection(database, "note");
 
   const inputToggle = () => {
     setInputVisible(!isInputVisible);
+  };
+
+  const saveNote = () => {
+    addDoc(dbInstance, {
+      noteTitle: noteTitle,
+      noteDesc: noteDesc,
+    });
   };
 
   return (
@@ -23,6 +34,9 @@ export default function NoteOperations() {
               placeholder="Enter the Title..."
               onChange={(e) => setNoteTitle(e.target.value)}
             />
+            <button className={styles.saveBtn} onClick={saveNote}>
+              Save Note
+            </button>
           </div>
         )}
       </div>
