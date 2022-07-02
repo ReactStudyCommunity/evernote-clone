@@ -3,9 +3,9 @@ import styles from "../styles/Evernote.module.scss";
 import NoteOperations from "./components/NoteOperations";
 import NoteDetails from "./components/NoteDetails";
 import { useState } from "react";
+import { Nullable } from "../util/Nullable";
 
 export default function Home() {
-  type Nullable<T> = T | null;
   const [id, setId] = useState<Nullable<number>>(null);
 
   const getSingleNote = (id: number) => {
