@@ -17,6 +17,8 @@ export default function NoteDetails({ id }) {
 
   const getEditData = () => {
     setIsEdit(true);
+    setTitle(singleNote?.title !== null ? singleNote!.title : "");
+    setDesc(singleNote?.desc !== null ? singleNote!.desc : "");
   };
 
   const getSingleNote = async () => {
@@ -42,7 +44,7 @@ export default function NoteDetails({ id }) {
     await addDoc(docRef, note).then(() => {
       setTitle("");
       setDesc("");
-      getNotes();
+      getSingleNote();
     });
   };
 
@@ -52,14 +54,17 @@ export default function NoteDetails({ id }) {
 
   return (
     <>
-      <button className={styles.editBtn}>Edit</button>
+      <button className={styles.editBtn} onClick={getEditData}>
+        Edit
+      </button>
       <button className={styles.deleteBtn}>Delete</button>
       {isEdit && (
         <div className={styles.inputContainer}>
           <input
             className={styles.input}
             placeholder="Enter the title..."
-            value={singleNote?.title}
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
           />
           <div className={styles.ReactQuill}>
             <ReactQuill onChange={setDesc} value={desc} />
